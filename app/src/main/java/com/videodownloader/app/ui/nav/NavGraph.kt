@@ -1,5 +1,6 @@
 package com.videodownloader.app.ui.nav
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Folder
@@ -10,6 +11,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -41,12 +43,16 @@ fun AppNavGraph(viewModel: MainViewModel) {
                 val currentDestination = backStackEntry?.destination
 
                 tabs.forEach { tab ->
-                    val selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
+                    val selected =
+                        currentDestination?.hierarchy?.any { it.route == tab.route } == true
+
                     NavigationBarItem(
                         selected = selected,
                         onClick = {
                             navController.navigate(tab.route) {
-                                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
                                 launchSingleTop = true
                                 restoreState = true
                             }
@@ -72,9 +78,15 @@ fun AppNavGraph(viewModel: MainViewModel) {
             startDestination = Tab.Home.route,
             modifier = Modifier.padding(padding)
         ) {
-            composable(Tab.Home.route) { HomeScreen(viewModel) }
-            composable(Tab.History.route) { HistoryScreen(viewModel) }
-            composable(Tab.Files.route) { FilesScreen() }
+            composable(Tab.Home.route) {
+                HomeScreen(viewModel)
+            }
+            composable(Tab.History.route) {
+                HistoryScreen(viewModel)
+            }
+            composable(Tab.Files.route) {
+                FilesScreen()
+            }
         }
     }
 }
